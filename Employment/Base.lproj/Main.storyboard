@@ -102,10 +102,10 @@
             </objects>
             <point key="canvasLocation" x="1102" y="91"/>
         </scene>
-        <!--View Controller - New Employee-->
+        <!--Add Employee View Controller - New Employee-->
         <scene sceneID="XKE-ng-7m1">
             <objects>
-                <viewController id="bXd-Rm-fKF" sceneMemberID="viewController">
+                <viewController id="bXd-Rm-fKF" customClass="LHLAddEmployeeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sF6-u3-jUO"/>
                         <viewControllerLayoutGuide type="bottom" id="sM8-uX-GgA"/>
@@ -114,8 +114,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Employee Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UTZ-kL-jQ1">
-                                <rect key="frame" x="20" y="75" width="129" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="First Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UTZ-kL-jQ1">
+                                <rect key="frame" x="20" y="75" width="86" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -128,13 +128,25 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Employee Salary" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NAv-YL-E8G">
-                                <rect key="frame" x="20" y="172" width="132" height="21"/>
+                                <rect key="frame" x="20" y="209" width="132" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Lm1-jI-RBX">
-                                <rect key="frame" x="20" y="201" width="280" height="30"/>
+                                <rect key="frame" x="20" y="238" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Last Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLb-z4-dKc">
+                                <rect key="frame" x="20" y="142" width="85" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1zU-kP-O6p">
+                                <rect key="frame" x="20" y="171" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -143,13 +155,26 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Employee" id="qrb-lU-s7r">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="doc-Xs-F6C"/>
-                        <barButtonItem key="rightBarButtonItem" title="Hired!" id="K7V-iO-yKH"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="doc-Xs-F6C">
+                            <connections>
+                                <action selector="cancel:" destination="bXd-Rm-fKF" id="4af-hL-pdt"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Hired!" id="K7V-iO-yKH">
+                            <connections>
+                                <action selector="hire:" destination="bXd-Rm-fKF" id="ldu-l8-8Vx"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="firstNameField" destination="jpl-Vl-8hO" id="JRx-89-eKB"/>
+                        <outlet property="lastNameField" destination="1zU-kP-O6p" id="rzr-Z0-1wo"/>
+                        <outlet property="salaryField" destination="Lm1-jI-RBX" id="dBl-el-Tbh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F7Q-Os-s7T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2094" y="91"/>
+            <point key="canvasLocation" x="2018" y="91"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0av-qH-gLD">

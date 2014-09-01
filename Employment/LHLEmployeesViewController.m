@@ -8,6 +8,8 @@
 
 #import "LHLEmployeesViewController.h"
 #import "LHLAddEmployeeViewController.h"
+#import "LHLDepartment.h"
+#import "LHLEmployee.h"
 
 @interface LHLEmployeesViewController () <LHLAddEmployeeDelegate>
 
@@ -30,17 +32,56 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self fetchEmployees];
+}
+
+-(void)saveContext {
+    NSError* error = nil;
+    if (![self.moc save:&error]) {
+        NSLog(@"Error saving managed object context in employees view controller: %@; %@",
+              [error localizedDescription], [error userInfo]);
+    }
+}
+
+-(void)fetchEmployees {
+    [self fetchTopPerformers];
+    [self fetchAverageJoes];
+    
+    [self.tableView reloadData];
 }
 
 -(void)fetchTopPerformers
 {
-    // TODO: fetch data here
-    [self.tableView reloadData];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K == %@",
+                              LHLEmployeeAttributes.isTopPerformer, @YES];
+    self.topPerformers = [self fetchEmployeesWithPredicate:predicate];
 }
 
 -(void)fetchAverageJoes
 {
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"isTopPerformer == %@", @NO];
+    self.averageJoes = [self fetchEmployeesWithPredicate:predicate];
+}
+
+-(NSArray*)fetchEmployeesWithPredicate:(NSPredicate*)predicate
+{
+    NSFetchRequest* fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[LHLEmployee entityName]];
+    fetchRequest.predicate = predicate;
     
+    NSSortDescriptor* lastNameSorter = [NSSortDescriptor sortDescriptorWithKey:@"lastName"
+                                                                     ascending:YES];
+    fetchRequest.sortDescriptors = @[lastNameSorter];
+    
+    NSError* error = nil;
+    NSArray* fetchedObjects = [self.moc executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil) {
+        NSLog(@"Error fetching top performing employees in department \"%@\": %@; %@",
+              self.department.name, [error localizedDescription], [error userInfo]);
+        return nil;
+    }
+    
+    return fetchedObjects;
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,7 +95,13 @@
 -(void)addEmployeeController:(LHLAddEmployeeViewController *)controller
              didHireEmployee:(id)employee
 {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+    [(LHLEmployee*)employee setDepartment:self.department];
     
+    [self saveContext];
+    
+    [self fetchEmployees];
+    [self.tableView reloadData];
 }
 
 -(void)addEmployeeControllerDidCancel:(LHLAddEmployeeViewController *)controller
@@ -99,6 +146,16 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     // Configure the cell...
+    LHLEmployee* employee;
+    if (indexPath.section == 0) {
+        employee = self.topPerformers[indexPath.row];
+    }
+    else
+        employee = self.averageJoes[indexPath.row];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@",
+                           employee.lastName, employee.firstName];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", employee.salaryValue];
     
     return cell;
 }
@@ -109,9 +166,10 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"modal_new_employee"]) {
-        LHLAddEmployeeViewController* addController = [segue destinationViewController];
+        UINavigationController* navController = [segue destinationViewController];
+        LHLAddEmployeeViewController* addController = (LHLAddEmployeeViewController*)(navController.topViewController);
         addController.delegate = self;
-        // TODO: Set the new employee's department.
+        addController.moc = self.moc;
     }
 }
 

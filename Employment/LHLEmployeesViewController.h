@@ -13,6 +13,6 @@
 @interface LHLEmployeesViewController : UITableViewController
 
 @property (nonatomic, strong) NSManagedObjectContext* moc;
-@property (nonatomic, strong) LHLDepartment* showingDepartment;
+@property (nonatomic, strong) LHLDepartment* department;
 
 @end

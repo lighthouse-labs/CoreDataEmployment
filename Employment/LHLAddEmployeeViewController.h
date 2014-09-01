@@ -24,6 +24,5 @@
 
 @property (nonatomic, weak) id<LHLAddEmployeeDelegate> delegate;
 @property (nonatomic, strong) NSManagedObjectContext* moc;
-// TODO: Add a department to add the new employee to
 
 @end

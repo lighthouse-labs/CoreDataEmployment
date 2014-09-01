@@ -7,8 +7,13 @@
 //
 
 #import "LHLAddEmployeeViewController.h"
+#import "LHLEmployee.h"
 
 @interface LHLAddEmployeeViewController ()
+
+@property (nonatomic, weak) IBOutlet UITextField* firstNameField;
+@property (nonatomic, weak) IBOutlet UITextField* lastNameField;
+@property (nonatomic, weak) IBOutlet UITextField* salaryField;
 
 @end
 
@@ -25,12 +30,17 @@
 
 -(IBAction)hire:(id)sender
 {
-    // TODO: Implement
+    LHLEmployee* employee = [LHLEmployee insertInManagedObjectContext:self.moc];
+    employee.firstName = self.firstNameField.text;
+    employee.lastName = self.lastNameField.text;
+    employee.salaryValue = [self.salaryField.text floatValue];
+    
+    [self.delegate addEmployeeController:self didHireEmployee:employee];
 }
 
 -(IBAction)cancel:(id)sender
 {
-    // TODO: Implement
+    [self.delegate addEmployeeControllerDidCancel:self];
 }
 
 - (void)viewDidLoad

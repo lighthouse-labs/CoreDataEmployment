@@ -30,10 +30,12 @@
     
     NSError* error = nil;
     NSPersistentStoreCoordinator* psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
+    NSDictionary* options = @{NSInferMappingModelAutomaticallyOption: @YES,
+                              NSMigratePersistentStoresAutomaticallyOption: @YES};
     [psc addPersistentStoreWithType:NSSQLiteStoreType
                       configuration:nil
                                 URL:storeURL
-                            options:nil
+                            options:options
                               error:&error];
     NSAssert(error == nil, @"Failed to create a persistent store.");
     
